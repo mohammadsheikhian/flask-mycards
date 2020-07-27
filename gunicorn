@@ -1,0 +1,4 @@
+#! /bin/bash
+
+gunicorn --access-logfile - --access-logformat "{'remote_ip':'%(h)s','response_code':'%(s)s','request_method':'%(m)s','request_path':'%(U)s','request_timetaken in microseconds':'%(D)s'}" --workers 1 --reload --timeout 9999999 --bind :8081 wsgi:app
+
