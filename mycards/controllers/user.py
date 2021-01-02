@@ -1,5 +1,5 @@
 from flask import *
-from mycards.utill import json as json_decorate
+from mycards.utill import to_json
 from mycards.model import db, User
 
 
@@ -7,7 +7,7 @@ user_blueprint = Blueprint('user_blueprint', __name__)
 
 
 @user_blueprint.route('/users', methods=['post'])
-@json_decorate
+@to_json
 def post():
     title = request.form.get('title')
     first_name = request.form.get('firstName')
@@ -23,7 +23,7 @@ def post():
 
 
 @user_blueprint.route('/users/<int:user_id>', methods=['get'])
-@json_decorate
+@to_json
 def get(user_id):
     user = db.session.query(User).get(user_id)
     if user is None:
@@ -32,7 +32,7 @@ def get(user_id):
 
 
 @user_blueprint.route('/users/<int:user_id>', methods=['put'])
-@json_decorate
+@to_json
 def put(user_id):
     user = db.session.query(User).get(user_id)
     if user is None:

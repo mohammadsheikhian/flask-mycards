@@ -1,13 +1,12 @@
 from functools import wraps
 
-from flask import jsonify, json as j, request, abort
 import jwt
+from flask import jsonify, json, request, abort
 
 from .model import db
-from .controllers.card import app
 
 
-def json(func):
+def to_json(func):
     """
     https://stackoverflow.com/questions/21352718/python-decorator-with-flask
     :param func:
@@ -16,7 +15,7 @@ def json(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
         result = func(*args, **kwargs)
-        return jsonify(j.dumps(result))
+        return jsonify(json.dumps(result))
     return wrapper
 
 
@@ -27,12 +26,10 @@ def authorize(func):
         if authorization_token is None:
             abort(401)
 
+        from . import app
         key = app.config.get('SECRET_KEY')
         try:
-            identify = jwt.decode(
-                authorization_token,
-                key=app.config.get('SECRET_KEY'),
-            )
+            identify = jwt.decode(authorization_token, key=key)
             app.identity = identify
 
         except jwt.ExpiredSignatureError:
