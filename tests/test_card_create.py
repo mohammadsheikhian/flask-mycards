@@ -1,11 +1,23 @@
 from flask import *
 
+from mycards import db
+from mycards.model import User
+from mycards.principal import JWTPrincipal
 from tests.helpers import BaseTestCase
 
 
 class TestCard(BaseTestCase):
 
     def test_create(self):
+        user1 = User(
+            title='mohammad',
+        )
+        db.session.add(user1)
+        db.session.commit()
+
+        jwt_principal = JWTPrincipal(dict(id=user1.id))
+        token = jwt_principal.dump()
+
         title = 'mohammad'
         cvv2 = '1234'
         form = dict(
@@ -17,7 +29,7 @@ class TestCard(BaseTestCase):
             method='create',
             data=form,
             headers=dict(
-                authorization='token',
+                authorization=token,
             )
         )
         self.assert_status(response, 200)

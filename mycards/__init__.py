@@ -11,8 +11,9 @@ app.register_blueprint(card_blueprint)
 app.__version__ = '0.1.0'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///cards.sqlite3'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SECRET_KEY'] = "secret key"
+app.config['SECRET_KEY'] = 'secret key'
 app.config['AUTHORIZATION_ALGORITHM'] = 'HS256'
+app.config['AUTHORIZATION_MAX_AGE'] = 86400 # 24 Hours
 db.init_app(app)
 
 

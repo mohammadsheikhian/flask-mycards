@@ -29,8 +29,9 @@ def authorize(func):
         from . import app
         key = app.config.get('SECRET_KEY')
         try:
-            identify = jwt.decode(authorization_token, key=key)
-            app.identity = identify
+            from .principal import JWTPrincipal
+            identify = JWTPrincipal.load(authorization_token)
+            request.identity = identify
 
         except jwt.ExpiredSignatureError:
             # 'Signature expired. Please log in again.'

@@ -17,6 +17,11 @@ class User(db.Model):
         db.String(100),
         nullable=True,
     )
+    cards = db.relationship(
+        'Card',
+        back_populates='user',
+        lazy=True,
+    )
 
     def __init__(self, title, first_name=None, last_name=None):
         self.title = title

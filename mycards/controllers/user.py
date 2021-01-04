@@ -1,5 +1,5 @@
 from flask import *
-from mycards.utill import to_json
+from mycards.utill import to_json, authorize
 from mycards.model import db, User
 
 
@@ -23,21 +23,26 @@ def post():
 
 
 @user_blueprint.route('/users/<int:user_id>', methods=['get'])
+@authorize
 @to_json
 def get(user_id):
     user = db.session.query(User).get(user_id)
     if user is None:
         abort(404)
+    if user.id != request.identity.payload['id']:
+        abort(403)
     return user.to_dict()
 
 
 @user_blueprint.route('/users/<int:user_id>', methods=['put'])
+@authorize
 @to_json
 def put(user_id):
     user = db.session.query(User).get(user_id)
     if user is None:
         abort(404)
-
+    if user.id != request.identity.payload['id']:
+        abort(403)
     title = request.json.get('title')
     user.title = title if title is not None else user.title
 

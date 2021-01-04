@@ -14,6 +14,8 @@ dependencies = [
     'flask',
     'flask-sqlalchemy',
     'pyjwt',
+    'click',
+    'itsdangerous',
 
     # Deployment
     'gunicorn',
@@ -26,10 +28,9 @@ setup(
     packages=find_packages(),
     install_requires=dependencies,
     include_package_data=True,
-    # entry_points={
-    #     'console_scripts': [
-    #         'dolphin = dolphin:dolphin.cli_main'
-    #     ]
-    # }
+    entry_points='''
+        [flask.commands]
+        mycards=mycards.cli:create_db
+    '''
 )
 
