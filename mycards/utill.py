@@ -1,6 +1,5 @@
 from functools import wraps
 
-import jwt
 from flask import jsonify, json, request, abort
 
 from .model import db
@@ -26,20 +25,9 @@ def authorize(func):
         if authorization_token is None:
             abort(401)
 
-        from . import app
-        key = app.config.get('SECRET_KEY')
-        try:
-            from .principal import JWTPrincipal
-            identify = JWTPrincipal.load(authorization_token)
-            request.identity = identify
-
-        except jwt.ExpiredSignatureError:
-            # 'Signature expired. Please log in again.'
-            abort(401)
-
-        except jwt.InvalidTokenError:
-            # 'Invalid token. Please log in again.'
-            abort(401)
+        from .principal import JWTPrincipal
+        identify = JWTPrincipal.load(authorization_token)
+        request.identity = identify
 
         return func(*args, **kwargs)
     return wrapper
