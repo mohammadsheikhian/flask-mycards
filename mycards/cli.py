@@ -1,6 +1,7 @@
 import click
 
-from . import app, db
+from . import app
+from .model import db
 
 
 @app.cli.command()

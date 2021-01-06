@@ -18,6 +18,7 @@ app.config['AUTHORIZATION_MAX_AGE'] = 86400  # 24 Hours
 def init_db():
     from mycards.model import db
     db.init_app(app)
+    return db
 
 
 init_db()
@@ -29,6 +30,6 @@ def version():
 
 
 if __name__ == '__main__':
-    db.create_all(app=app)
+    init_db().create_all(app=app)
     app.run(debug=True)
 

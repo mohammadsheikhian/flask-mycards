@@ -3,6 +3,7 @@ from functools import wraps
 from flask import jsonify, json, request, abort
 
 from .model import db
+from .principal import JWTPrincipal
 
 
 def to_json(func):
@@ -27,7 +28,6 @@ def authorize(func):
         if authorization_token is None:
             abort(401)
 
-        from .principal import JWTPrincipal
         identify = JWTPrincipal.load(authorization_token)
         request.identity = identify
 

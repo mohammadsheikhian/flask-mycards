@@ -1,7 +1,7 @@
 from itsdangerous import TimedJSONWebSignatureSerializer, \
     JSONWebSignatureSerializer
 
-from . import app
+from .app import get_app
 
 
 class JWTPrincipal:
@@ -10,10 +10,10 @@ class JWTPrincipal:
 
     @classmethod
     def create_serializer(cls, force=False, max_age=None):
-        secret = app.config.get('SECRET_KEY')
-        algorithm = app.config.get('AUTHORIZATION_ALGORITHM')
+        secret = get_app().config.get('SECRET_KEY')
+        algorithm = get_app().config.get('AUTHORIZATION_ALGORITHM')
         if max_age is None:
-            max_age = app.config.get('AUTHORIZATION_MAX_AGE')
+            max_age = get_app().config.get('AUTHORIZATION_MAX_AGE')
 
         if force:
             return JSONWebSignatureSerializer(
