@@ -1,5 +1,5 @@
 from flask import *
-from mycards.utill import to_json, authorize
+from mycards.utill import to_json, authorize, commit
 from mycards.model import db, Card
 
 
@@ -9,6 +9,7 @@ card_blueprint = Blueprint('card_blueprint', __name__)
 @card_blueprint.route('/cards', methods=['create'])
 @authorize
 @to_json
+@commit
 def create():
     title = request.form.get('title')
     card = Card(
@@ -17,8 +18,7 @@ def create():
         user_id=request.identity.payload['id'],
     )
     db.session.add(card)
-    db.session.commit()
-    return card.to_dict()
+    return card
 
 
 @card_blueprint.route('/cards/<int:card_id>', methods=['get'])
@@ -31,12 +31,13 @@ def get(card_id):
         .one_or_none()
     if card is None:
         abort(404)
-    return card.to_dict()
+    return card
 
 
 @card_blueprint.route('/cards/<int:card_id>', methods=['update'])
 @authorize
 @to_json
+@commit
 def update(card_id):
     card = db.session.query(Card) \
         .filter(Card.id == card_id) \
@@ -51,5 +52,4 @@ def update(card_id):
     cvv2 = request.json.get('cvv2')
     card.cvv2 = cvv2 if cvv2 is not None else card.cvv2
 
-    db.session.commit()
-    return card.to_dict()
+    return card

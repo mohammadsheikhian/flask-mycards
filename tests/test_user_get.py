@@ -1,7 +1,6 @@
 from flask import *
 
-from mycards import db
-from mycards.model import User
+from mycards.model import User, db
 from tests.helpers import BaseTestCase
 from mycards.principal import JWTPrincipal
 

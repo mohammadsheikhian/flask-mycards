@@ -1,8 +1,7 @@
-from flask import *
+from flask import Flask
 
 from mycards.controllers.user import user_blueprint
 from mycards.controllers.card import card_blueprint
-from mycards.model import db
 
 
 app = Flask(__name__)
@@ -13,8 +12,15 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///cards.sqlite3'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'secret key'
 app.config['AUTHORIZATION_ALGORITHM'] = 'HS256'
-app.config['AUTHORIZATION_MAX_AGE'] = 86400 # 24 Hours
-db.init_app(app)
+app.config['AUTHORIZATION_MAX_AGE'] = 86400  # 24 Hours
+
+
+def init_db():
+    from mycards.model import db
+    db.init_app(app)
+
+
+init_db()
 
 
 @app.route('/version')

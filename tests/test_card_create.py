@@ -1,7 +1,6 @@
-from flask import *
+from flask import json
 
-from mycards import db
-from mycards.model import User
+from mycards.model import User, db
 from mycards.principal import JWTPrincipal
 from tests.helpers import BaseTestCase
 
@@ -36,3 +35,5 @@ class TestCard(BaseTestCase):
         self.assertEqual(response.headers['Content-Type'], 'application/json')
         resp = json.loads(response.json)
         self.assertEqual(resp['title'], title)
+        self.assertIsNotNone(resp['id'])
+

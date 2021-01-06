@@ -14,6 +14,8 @@ def to_json(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
         result = func(*args, **kwargs)
+        if hasattr(result, 'to_dict'):
+            result = result.to_dict()
         return jsonify(json.dumps(result))
     return wrapper
 

@@ -1,3 +1,4 @@
+# from ..principal import JWTPrincipal
 from . import db
 
 
@@ -36,3 +37,7 @@ class User(db.Model):
             lastName=self.last_name,
         )
         return result
+
+    # def create_jwt_principal(self):
+    #     return JWTPrincipal(self.to_dict())
+

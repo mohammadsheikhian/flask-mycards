@@ -1,7 +1,8 @@
 from flask_testing import TestCase
 from flask import *
 
-from mycards import app, db
+from mycards import app
+from mycards.model import db
 
 
 class BaseTestCase(TestCase):
